@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">GPStest2</string>
+    <string name="SET_PRIORITY_HIGH_ACCURACY">using GPS sensors</string>
+    <string name="SET_BALANCED_POWER_ACCURACY">Using towers + wifi</string>
+    <string name="PERMISSION_NOT_GRANTED">This app requires permission to be granted in order to work properly</string>
+    <string name="RESOURCE_NOT_AVAILABLE">not available</string>
+    <string name="UPDATE_ON">Location is being tracked</string>
+    <string name="UPDATE_OFF">Location is NOT being tracked</string>
+    <string name="OS_NOT_SUPPORTED">OS not supported</string>
+    <string name="SHOW_LIST_BTT">show waypoint list</string>
+    <string name="LATITUDE_LABEL">Lat:</string>
+    <string name="LONGITUDE_LABEL">lon:</string>
+    <string name="ALTITUDE_LABEL">Altitude:</string>
+    <string name="ACCURACY_LABEL">Accuracy:</string>
+    <string name="SPEED_LABEL">Speed:</string>
+    <string name="SENSOR_LABEL">Sensor:</string>
+    <string name="UPDATES_LABEL">Updates:</string>
+    <string name="LOCATION_UPDATES_SWITCH">Location Updates</string>
+    <string name="SET_INTERVAL_SWITCH">GPS/SavePower</string>
+    <string name="ADDRESS_LABEL">Address:</string>
+    <string name="NEW_WAYPOINT_BTT">New WayPoint</string>
+    <string name="WAYPOINTS_LABEL">WayPoints:</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
