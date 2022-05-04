@@ -3,6 +3,8 @@ package com.example.gpstest2;
 import android.app.Application;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class CameraList extends Application {
@@ -24,6 +26,6 @@ public class CameraList extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
-        myLocations = new ArrayList<>();
+        myLocations = Collections.synchronizedList(new ArrayList<>());
     }
 }

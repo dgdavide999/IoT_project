@@ -9,12 +9,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -142,7 +140,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        btt_startDBrequest.setOnClickListener(view -> new Thread(new DBrequest((CameraList)getApplicationContext(),savedLocations)).start());
+        btt_startDBrequest.setOnClickListener(view -> {
+            CameraList cameraList = (CameraList)getApplicationContext();
+            new Thread(new DBrequest(cameraList)).start();
+        });
     }
 
     @SuppressLint("MissingPermission")
