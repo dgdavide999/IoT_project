@@ -17,10 +17,10 @@ public class ShowSavedLocationList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_saved_location_list);
 
-        LocationsList locationsList = (LocationsList)getApplicationContext();
-        List<Location> savedLocations = locationsList.getMyLocations();
+        CameraList cameraList = (CameraList)getApplicationContext();
+        List<Camera> savedLocations = cameraList.getMyLocations();
 
         lst_savedLocations = findViewById(R.id.lst_wayPoint);
-        lst_savedLocations.setAdapter(new ArrayAdapter<Location>(this, android.R.layout.simple_list_item_1, savedLocations));
+        lst_savedLocations.setAdapter(new ArrayAdapter<Camera>(this, android.R.layout.simple_list_item_1, savedLocations));
     }
 }

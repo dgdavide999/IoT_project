@@ -1,23 +1,22 @@
 package com.example.gpstest2;
 
 import android.app.Application;
-import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationsList extends Application {
+public class CameraList extends Application {
     //this class must be a singleton: it can be only one objet that implement this class at one time
     //i had to change the manifest name
-    private static LocationsList singleton;
+    private static CameraList singleton;
 
-    private List<Location> myLocations;
+    private List<Camera> myLocations;
 
-    public List<Location> getMyLocations(){
+    public List<Camera> getMyLocations(){
         return myLocations;
     }
 
-    public LocationsList getIstance(){
+    public CameraList getIstance(){
         return singleton;
     }
 

@@ -18,7 +18,7 @@
     <string name="LOCATION_UPDATES_SWITCH">Location Updates</string>
     <string name="SET_INTERVAL_SWITCH">GPS/SavePower</string>
     <string name="ADDRESS_LABEL">Address:</string>
-    <string name="NEW_WAYPOINT_BTT">New WayPoint</string>
+    <string name="NEW_WAYPOINT_BTT">New WayPoint (disabilitato)</string>
     <string name="WAYPOINTS_LABEL">WayPoints:</string>
     <string name="title_activity_maps">MapsActivity</string>
 </resources>

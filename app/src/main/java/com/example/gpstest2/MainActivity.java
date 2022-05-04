@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address, tv_waypointsCounts;
     private Switch sw_locationupdates, sw_gps;
-    private Button  btt_newWaypoint, btt_showWaypointList, btt_showMap;
+    private Button  btt_newWaypoint, btt_showWaypointList, btt_showMap, btt_startDBrequest;
 
     // Location request is a config file for all settings related to FusedLocationProviderClient
     private LocationRequest locationRequest;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Location currentLocation;
 
-    List<Location> savedLocations;
+    List<Camera> savedLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         btt_newWaypoint= findViewById(R.id.btt_newWayPoint);
         btt_showWaypointList = findViewById(R.id.btt_showWaypointList);
         btt_showMap = findViewById(R.id.btt_showMap);
+        btt_startDBrequest = findViewById(R.id.btt_startDBrequest);
         //locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //òocationRequest
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         };
         //fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //onClickListeners
         sw_gps.setOnClickListener(view -> {
             if (sw_gps.isChecked()) {
                 //most accurate -- use GPS
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
         updateGPS();
 
-        //onClickListeners
+
         sw_locationupdates.setOnClickListener(view -> {
             if (sw_locationupdates.isChecked()) {
                 //turn on location traking
@@ -124,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
             // get the gps location
 
             // add the new location to the global list
-            LocationsList locationsList = (LocationsList)getApplicationContext();
-            savedLocations = locationsList.getMyLocations();
-            savedLocations.add(currentLocation);
+            CameraList cameraList = (CameraList)getApplicationContext();
+            savedLocations = cameraList.getMyLocations();
+            //savedLocations.add(currentLocation);
         });
 
         btt_showWaypointList.setOnClickListener(view -> {
@@ -138,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this,MapsActivity.class);
             startActivity(i);
         });
+
+        btt_startDBrequest.setOnClickListener(view -> new Thread(new DBrequest((CameraList)getApplicationContext(),savedLocations)).start());
     }
 
     @SuppressLint("MissingPermission")
@@ -171,18 +176,16 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG + "onRequest","grantResult[0] =" + grantResults[0] + "     permission[0] = "+ permissions[0]);
         Log.i(TAG + "onRequest","grantResult[1] =" + grantResults[1]);
         Log.i(TAG + "onRequest","grantResult.[2] =" + grantResults[2]);
-        switch(requestCode){
-            case PERMISSION_CODE:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                        grantResults[1] == PackageManager.PERMISSION_GRANTED &&
-                        grantResults[2] == PackageManager.PERMISSION_GRANTED){
-                    Log.i(TAG + "onRequest","permissions granted");
-                    updateGPS();
-                } else {
-                    Toast.makeText(this, R.string.PERMISSION_NOT_GRANTED, Toast.LENGTH_SHORT).show();
-                    finish();// call onDestroy
-                }
-                break;
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG + "onRequest", "permissions granted");
+                updateGPS();
+            } else {
+                Toast.makeText(this, R.string.PERMISSION_NOT_GRANTED, Toast.LENGTH_SHORT).show();
+                finish();// call onDestroy
+            }
         }
     }
 
@@ -217,9 +220,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Log.i(TAG,"permission not granted yet");
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, PERMISSION_CODE);
-            }
+            requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, PERMISSION_CODE);
         }
 
     }
@@ -250,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
             tv_address.setText("unable to get street address");
         }
 
-        LocationsList locationsList = (LocationsList) getApplicationContext();
-        savedLocations = locationsList.getMyLocations();
+        CameraList cameraList = (CameraList) getApplicationContext();
+        savedLocations = cameraList.getMyLocations();
         tv_waypointsCounts.setText(Integer.toString(savedLocations.size()));
         //show the numbeer of waypoints
     }

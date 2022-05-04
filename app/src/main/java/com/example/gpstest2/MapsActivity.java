@@ -23,7 +23,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final float ZOOM = 12.0f;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private List<Location> savedLocation;
+    private List<Camera> savedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        LocationsList locationsList = (LocationsList)getApplicationContext();
-        savedLocation = locationsList.getMyLocations();
+        CameraList cameraList = (CameraList)getApplicationContext();
+        savedLocation = cameraList.getMyLocations();
     }
 
     @Override
@@ -49,11 +49,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         LatLng lastLocationPlaced = sydney;
-        for (Location location: savedLocation) {
-            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        for (Camera camera: savedLocation) {
+            LatLng latLng = camera.getPosition();
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position((latLng));
-            markerOptions.title("Lat: "+ location.getLatitude()+" Long: "+location.getLongitude());
+            markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
             mMap.addMarker(markerOptions);
             lastLocationPlaced = latLng;
         }
