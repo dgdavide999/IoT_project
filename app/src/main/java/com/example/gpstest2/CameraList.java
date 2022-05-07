@@ -2,19 +2,17 @@ package com.example.gpstest2;
 
 import android.app.Application;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CameraList extends Application {
     //this class must be a singleton: it can be only one objet that implement this class at one time
     //i had to change the manifest name
     private static CameraList singleton;
 
-    private List<Camera> myLocations;
+    private Map<Integer,Camera> myLocations;
 
-    public List<Camera> getMyLocations(){
+    public Map<Integer, Camera> getMyLocations(){
         return myLocations;
     }
 
@@ -26,6 +24,6 @@ public class CameraList extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
-        myLocations = Collections.synchronizedList(new ArrayList<>());
+        myLocations = new ConcurrentHashMap<>();
     }
 }

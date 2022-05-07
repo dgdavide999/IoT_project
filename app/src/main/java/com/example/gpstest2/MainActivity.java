@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Location currentLocation;
 
-    List<Camera> savedLocations;
+    Map<Integer, Camera> savedLocations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

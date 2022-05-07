@@ -9,14 +9,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DBrequest implements Runnable{
     CameraList cameraList;
-    List<Camera> savedLocations;
+    Map<Integer, Camera> savedLocations;
     public DBrequest(CameraList lc){
         cameraList = lc;
     }
@@ -38,7 +38,7 @@ public class DBrequest implements Runnable{
         List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
 
         for (JSONObject obj: jsonList) {
-            savedLocations.add( new Camera(obj.getInt("id"),obj.getDouble("lat"),obj.getDouble("lng"),CameraStatus.valueOf("ON")));
+            savedLocations.put( obj.getInt("id"), new Camera(obj.getDouble("lat"),obj.getDouble("lng"),CameraStatus.valueOf("ON")));
         }
     }
 

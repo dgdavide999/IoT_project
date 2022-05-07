@@ -17,13 +17,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.gpstest2.databinding.ActivityMapsBinding;
 
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final float ZOOM = 12.0f;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private List<Camera> savedLocation;
+    private Map<Integer,Camera> savedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         */
-        LatLng lastLocationPlaced = null;
-
+        savedLocation.forEach((id,camera)->{
+            LatLng latLng = camera.getPosition();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position((latLng));
+            markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
+            mMap.addMarker(markerOptions);
+        });
+        /*
         for (Camera camera: savedLocation) {
             LatLng latLng = camera.getPosition();
             MarkerOptions markerOptions = new MarkerOptions();
@@ -58,11 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
             mMap.addMarker(markerOptions);
             lastLocationPlaced = latLng;
-        }
-        //zoom at the last wayPoint added
+        }*/
+        /*zoom at the last wayPoint added
         if(lastLocationPlaced!=null)
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocationPlaced, ZOOM));
-
+        */
         //click on markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
