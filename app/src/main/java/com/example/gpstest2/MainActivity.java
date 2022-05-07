@@ -27,6 +27,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.CancellationToken;
+import com.google.android.gms.tasks.OnTokenCanceledListener;
 
 import java.util.List;
 import java.util.Map;
@@ -109,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 tv_sensor.setText(R.string.SET_BALANCED_POWER_ACCURACY);
             }
         });
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
         updateGPS();
-
-
+        startLocationUpdates();
         sw_locationupdates.setOnClickListener(view -> {
             if (sw_locationupdates.isChecked()) {
                 //turn on location traking
@@ -147,10 +149,12 @@ public class MainActivity extends AppCompatActivity {
             CameraList cameraList = (CameraList)getApplicationContext();
             new Thread(new DBrequest(cameraList)).start();
         });
+        startLocationUpdates();
     }
 
     @SuppressLint("MissingPermission")
     private void startLocationUpdates() {
+        Log.i(TAG,"startLocationsUpdate");
         tv_updates.setText(R.string.UPDATE_ON);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.PERMISSION_NOT_GRANTED, Toast.LENGTH_SHORT).show();
@@ -206,17 +210,27 @@ public class MainActivity extends AppCompatActivity {
 
                 if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+                    fusedLocationProviderClient.getCurrentLocation(locationRequest.getPriority(), new CancellationToken() {
+                        @NonNull
+                        @Override
+                        public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                            return null;
+                        }
+
+                        @Override
+                        public boolean isCancellationRequested() {
+                            return false;
+                        }
+                    }).addOnCompleteListener(task -> {
                         Location location = task.getResult();
-                        if (location != null)
+                        if (location != null) {
                             currentLocation = location;
+                            updateUI(currentLocation);
+                        }
                         else {
                             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
                         }
                     });
-                    //null solo all'avvio
-                    if (currentLocation != null)
-                        updateUI(currentLocation);
                 }
                 else{
                     startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -226,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG,"permission not granted yet");
             requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, PERMISSION_CODE);
         }
-
     }
 
     @SuppressLint("SetTextI18n")
