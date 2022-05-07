@@ -138,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
         btt_showMap.setOnClickListener(view -> {
             Intent i = new Intent(MainActivity.this,MapsActivity.class);
+            i.putExtra("lat", currentLocation.getLatitude());
+            i.putExtra("lng", currentLocation.getLongitude());
             startActivity(i);
         });
 

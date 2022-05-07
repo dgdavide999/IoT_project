@@ -1,12 +1,11 @@
 package com.example.gpstest2;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import android.location.Location;
-import android.os.Bundle;
-import android.widget.Toast;
-
+import com.example.gpstest2.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,9 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.gpstest2.databinding.ActivityMapsBinding;
 
-import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -45,43 +42,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /* Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        */
         savedLocation.forEach((id,camera)->{
             LatLng latLng = camera.getPosition();
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position((latLng));
             markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
+            markerOptions.snippet(""+id);
             mMap.addMarker(markerOptions);
         });
-        /*
-        for (Camera camera: savedLocation) {
-            LatLng latLng = camera.getPosition();
+        double myLat = getIntent().getDoubleExtra("lat",-1);
+        double myLng = getIntent().getDoubleExtra("lng",-1);
+        if(myLat > 0 && myLng > 0) {
+            LatLng you = new LatLng(myLat, myLng);
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position((latLng));
-            markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
+            markerOptions.position(you);
+            markerOptions.title("you");
+            //markerOptions.icon();
             mMap.addMarker(markerOptions);
-            lastLocationPlaced = latLng;
-        }*/
-        /*zoom at the last wayPoint added
-        if(lastLocationPlaced!=null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocationPlaced, ZOOM));
-        */
+            /*zoom at user's position*/
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
+            //TODO: creare un thread che aggiorna questo marker ogni secondo
+            //(prova a usare l'id del marker)
+        }
         //click on markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                // lets count the number od times the pin is clicked.
-                //TODO: aprire un activity con le informazioni del DB
-
-                Integer clicks = (Integer) marker.getTag();
-                if(clicks == null) clicks = 0;
-                clicks++;
-                marker.setTag(clicks);
-                Toast.makeText(MapsActivity.this, "Marker "+ marker.getTitle() + " was clicked "+ marker.getTag() +" times", Toast.LENGTH_SHORT).show();
+                //ritornare false significa ok
+                if(marker.getSnippet()==null)
+                    return false;
+                Integer cameraId = Integer.parseInt(marker.getSnippet());
+                //TODO: chiedere al DB la registrazione più recente (dato l'id della camera) e stampare i dati
                 return false;
             }
         });
