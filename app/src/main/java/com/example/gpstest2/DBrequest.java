@@ -38,7 +38,7 @@ public class DBrequest implements Runnable{
         List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
 
         for (JSONObject obj: jsonList) {
-            savedLocations.add( new Camera(obj.getInt("id"),obj.getDouble("lat"),obj.getDouble("lng"),CameraStatus.valueOf("LOW")));
+            savedLocations.add( new Camera(obj.getInt("id"),obj.getDouble("lat"),obj.getDouble("lng"),CameraStatus.valueOf("ON")));
         }
     }
 
@@ -51,14 +51,14 @@ public class DBrequest implements Runnable{
                 JSONObject json = new JSONObject("{" + jobj + "}");    //Creating A JSON
                 l.add(json);
             }
-            return l;    // Returning JSON
+            return l;
         } catch (Exception e) {
             return null;
         }
     }
 
-    public String Read(Reader re) throws IOException {     // class Declaration
-        StringBuilder str = new StringBuilder();     // To Store Url Data In String.
+    public String Read(Reader re) throws IOException {
+        StringBuilder str = new StringBuilder();
         int temp;
         do {
             temp = re.read();       //reading Charcter By Chracter.
