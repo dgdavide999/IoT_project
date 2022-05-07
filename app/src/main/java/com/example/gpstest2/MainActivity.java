@@ -179,11 +179,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.i(TAG + "onRequest","grantResult.size =" + grantResults.length);
-        Log.i(TAG + "onRequest","Permission Granted =" + PackageManager.PERMISSION_GRANTED);
-        Log.i(TAG + "onRequest","grantResult[0] =" + grantResults[0] + "     permission[0] = "+ permissions[0]);
-        Log.i(TAG + "onRequest","grantResult[1] =" + grantResults[1]);
-        Log.i(TAG + "onRequest","grantResult.[2] =" + grantResults[2]);
         if (requestCode == PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
@@ -211,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     fusedLocationProviderClient.getCurrentLocation(locationRequest.getPriority(), new CancellationToken() {
-                        @NonNull
+
                         @Override
                         public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
                             return null;
@@ -273,8 +268,4 @@ public class MainActivity extends AppCompatActivity {
         tv_waypointsCounts.setText(Integer.toString(savedLocations.size()));
         //show the numbeer of waypoints
     }
-
 }
-
-//https://www.youtube.com/watch?v=UKUb7C3b0us
-//https://youtu.be/_xUcYfbtfsI?t=3421
