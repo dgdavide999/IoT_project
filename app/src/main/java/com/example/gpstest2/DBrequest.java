@@ -7,9 +7,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBrequest implements Runnable{
@@ -33,33 +35,38 @@ public class DBrequest implements Runnable{
     }
 
     private void loadIntoListView() throws JSONException, IOException {
-        List<String> jsonList = readJsonFromUrl("http://sawproject.altervista.org/php/cam_request.php");
-        for (String s: jsonList) {
-            JSONObject obj = new JSONObject(jsonList.get(0));
+        List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
+
+        for (JSONObject obj: jsonList) {
             savedLocations.add( new Camera(obj.getInt("id"),obj.getDouble("lat"),obj.getDouble("lng"),CameraStatus.valueOf("LOW")));
         }
     }
 
-
-    public static List<String> readJsonFromUrl(String url) throws IOException, JSONException {
-        /*TODO: la struttura dati ricevuta ha il formato
-         [{"campo1":"val1",'[altri campi]'},{'altre tuple...'}]
-         */
-        List<String> list= new LinkedList<String>();
-        try (InputStream is = new URL(url).openStream()) {
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            while (rd.read() != ']')
-            {
-                rd.skip(1);
-                char c;
-                String tupla= "";
-                while((c = (char) rd.read())!='}'){
-                    tupla+=c;
-                }
-                list.add(tupla+'}');
+    public List<JSONObject> readJsonFromUrl(String link) {
+        try (InputStream input = new URL(link).openStream()) {
+            List<JSONObject> l = new ArrayList<>();
+            BufferedReader re = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+            String Text = Read(re);
+            for (String jobj : Text.split("\\},\\{")) {
+                JSONObject json = new JSONObject("{" + jobj + "}");    //Creating A JSON
+                l.add(json);
             }
-            return list;
+            return l;    // Returning JSON
+        } catch (Exception e) {
+            return null;
         }
+    }
+
+    public String Read(Reader re) throws IOException {     // class Declaration
+        StringBuilder str = new StringBuilder();     // To Store Url Data In String.
+        int temp;
+        do {
+            temp = re.read();       //reading Charcter By Chracter.
+            str.append((char) temp);
+        } while (temp != -1);
+        //  re.read() return -1 when there is end of buffer , data or end of file.
+        return str.substring(2,str.length()-3);
+        //toglo le quadre prima e ultima graffa e il -1
+
     }
 }

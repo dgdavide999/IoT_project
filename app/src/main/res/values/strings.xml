@@ -21,4 +21,6 @@
     <string name="NEW_WAYPOINT_BTT">New WayPoint (disabilitato)</string>
     <string name="WAYPOINTS_LABEL">WayPoints:</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="DbURL">https://sawproject.altervista.org/php/cam_request.php</string>
 </resources>
