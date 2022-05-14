@@ -1,10 +1,15 @@
 package com.example.gpstest2;
 
+import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.gpstest2.CamerasData.Camera;
+import com.example.gpstest2.CamerasData.CameraList;
+import com.example.gpstest2.CamerasData.Registrations.ShowTrafficInfo;
 import com.example.gpstest2.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -22,7 +28,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final float ZOOM = 12.0f;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-    private Map<Integer,Camera> savedLocation;
+    private Map<Integer, Camera> savedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +76,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 //ritornare false significa ok
-                if(marker.getSnippet()==null)
+                if(marker.getSnippet()==null || marker.getSnippet()=="you")
                     return false;
                 Integer cameraId = Integer.parseInt(marker.getSnippet());
                 //TODO: chiedere al DB la registrazione più recente (dato l'id della camera) e stampare i dati
+                Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
+                i.putExtra("cameraID",marker.getSnippet());
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                LatLng pos = marker.getPosition();
+                try {
+                    i.putExtra("address",geocoder.getFromLocation(pos.latitude, pos.longitude, 1).get(0).getAddressLine(0));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
         });

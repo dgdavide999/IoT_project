@@ -1,4 +1,4 @@
-package com.example.gpstest2;
+package com.example.gpstest2.CamerasData;
 
 import android.app.Application;
 
@@ -10,7 +10,7 @@ public class CameraList extends Application {
     //i had to change the manifest name
     private static CameraList singleton;
 
-    private Map<Integer,Camera> myLocations;
+    private Map<Integer, Camera> myLocations;
 
     public Map<Integer, Camera> getMyLocations(){
         return myLocations;

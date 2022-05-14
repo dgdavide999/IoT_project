@@ -22,6 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.gpstest2.CamerasData.Camera;
+import com.example.gpstest2.CamerasData.CameraList;
+import com.example.gpstest2.CamerasData.DBrequest.DBrequest_cameras;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         btt_startDBrequest.setOnClickListener(view -> {
             CameraList cameraList = (CameraList)getApplicationContext();
-            new Thread(new DBrequest(cameraList)).start();
+            new Thread(new DBrequest_cameras(cameraList)).start();
         });
         startLocationUpdates();
     }
