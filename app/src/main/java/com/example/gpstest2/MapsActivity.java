@@ -3,6 +3,7 @@ package com.example.gpstest2;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -28,6 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final float ZOOM = 12.0f;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    private Marker myMarker;
     private Map<Integer, Camera> savedLocation;
 
     @Override
@@ -65,11 +67,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerOptions.position(you);
             markerOptions.title("you");
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-            mMap.addMarker(markerOptions);
+            myMarker = mMap.addMarker(markerOptions);
             /*zoom at user's position*/
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
             //TODO: creare un thread che aggiorna questo marker ogni secondo
-            //(prova a usare l'id del marker)
+            MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
+            Log.i("prima di exxxxxxxecuteeeeeeeee","qui");
+            mm.execute(getApplicationContext());
         }
         //click on markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -79,7 +83,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(marker.getSnippet()==null || marker.getSnippet()=="you")
                     return false;
                 Integer cameraId = Integer.parseInt(marker.getSnippet());
-                //TODO: chiedere al DB la registrazione più recente (dato l'id della camera) e stampare i dati
                 Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
                 i.putExtra("cameraID",marker.getSnippet());
                 Geocoder geocoder = new Geocoder(getApplicationContext());
@@ -89,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                //TODO: far partire i (aspetta di avere le query)
                 return false;
             }
         });

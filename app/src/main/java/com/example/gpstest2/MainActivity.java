@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         btt_startDBrequest.setOnClickListener(view -> {
             CameraList cameraList = (CameraList)getApplicationContext();
             new Thread(new DBrequest_cameras(cameraList)).start();
+            //TODO: usare interfaccia IDownload
         });
         startLocationUpdates();
     }
