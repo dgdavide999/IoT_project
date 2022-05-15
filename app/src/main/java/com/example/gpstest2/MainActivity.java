@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address;
     private Switch sw_locationupdates, sw_gps;
-    private Button btt_showMap, btt_startDBrequest;
+    private Button btt_showMap;
 
     // Location request is a config file for all settings related to FusedLocationProviderClient
     private LocationRequest locationRequest;
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         sw_locationupdates = findViewById(R.id.sw_locationsupdates);
         //Buttons
         btt_showMap = findViewById(R.id.btt_showMap);
-        btt_startDBrequest = findViewById(R.id.btt_startDBrequest);
         //locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //òocationRequest
@@ -126,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         btt_showMap.setOnClickListener(view -> {
+            CameraList cameraList = (CameraList)getApplicationContext();
+            //TODO: creare solo il runnable e usare il metodo run
+            new Thread(new DBrequest_cameras(cameraList)).start();
             Intent i = new Intent(MainActivity.this,MapsActivity.class);
             i.putExtra("lat", currentLocation.getLatitude());
             i.putExtra("lng", currentLocation.getLongitude());
@@ -133,11 +135,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        btt_startDBrequest.setOnClickListener(view -> {
-            CameraList cameraList = (CameraList)getApplicationContext();
-            new Thread(new DBrequest_cameras(cameraList)).start();
-            //TODO: usare interfaccia IDownload
-        });
         startLocationUpdates();
     }
 

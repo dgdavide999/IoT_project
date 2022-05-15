@@ -50,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         savedLocation.forEach((id,camera)->{
             LatLng latLng = camera.getPosition();
@@ -74,26 +74,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
             Log.i("MapsActivity","mm.execute");
             mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
+
         }
         //click on markers
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-                //ritornare false significa ok
-                if(marker.getSnippet()==null || marker.getSnippet().equals("you"))
-                    return false;
-                Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
-                i.putExtra("cameraID",marker.getSnippet());
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                LatLng pos = marker.getPosition();
-                try {
-                    i.putExtra("address",geocoder.getFromLocation(pos.latitude, pos.longitude, 1).get(0).getAddressLine(0));
-                } catch (IOException e) {
-
-                }
-                //TODO: far partire i (aspetta di avere le query "lastRegistration")
+        mMap.setOnMarkerClickListener(marker -> {
+            if(marker.getSnippet()==null || marker.getSnippet().equals("you"))
                 return false;
-            }
+            Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
+            i.putExtra("cameraID",marker.getSnippet());
+            Geocoder geocoder = new Geocoder(getApplicationContext());
+            LatLng pos = marker.getPosition();
+            try {
+                i.putExtra("address",geocoder.getFromLocation(pos.latitude, pos.longitude, 1).get(0).getAddressLine(0));
+            } catch (IOException e) {}
+            //TODO: far partire i (aspetta di avere le query "lastRegistration")
+            return false;
         });
     }
 
@@ -101,5 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onDestroy() {
         super.onDestroy();
         Log.i("TAG","OnDestroy");
+        //TODO: fermare i moveMaker (broadCast?)
+        // usare put extra con un valore bool che se falso termina il ciclo?
     }
 }

@@ -38,6 +38,7 @@ public class MoveMarker extends AsyncTask {
         Log.i(TAG,"doInBack");
         requestInterval = (long)objects[0];
         updateGPS(context);
+        Log.i(TAG,"fineeee");
         return null;
     }
 
@@ -59,44 +60,49 @@ public class MoveMarker extends AsyncTask {
                     public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
                         return null;
                     }
-
                     @Override
                     public boolean isCancellationRequested() {
                         return false;
                     }
                 }).addOnCompleteListener(task -> {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        newLocation = location;
-                        Log.i(TAG,"updateGPS:  location trovata");
-                        marker.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
+                    newLocation = task.getResult();
+                    if (newLocation != null) {
+                        Log.i(TAG, "updateGPS:  location trovata");
+                        marker.setPosition(new LatLng(newLocation.getLatitude(), newLocation.getLongitude()));
+                    } else
+                        Log.i(TAG, "updateGPS:  location = null");
+                    publishProgress(iCanReedGPS);
+                    try {
+                        Thread.sleep(requestInterval / 10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-
+                    updateGPS(context);
                 });
-        }
-
-        try {
-            Thread.sleep(requestInterval);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                /**/
         }
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
+    protected void onProgressUpdate(Object[] values) {
+        super.onProgressUpdate(values);
+        Log.i(TAG,"ho aggiornato");
         if(newLocation==null){
+            Log.i(TAG,"non trovo");
             if(iCanReedGPS){
                 Toast.makeText(context,"connessione gps interrotta",Toast.LENGTH_LONG).show();
+                Log.i(TAG,"avverto che non trovo");
             }
             iCanReedGPS=false;
         }else{
+            Log.i(TAG,"trovo");
             if(!iCanReedGPS){
+                Log.i(TAG,"avverto che trovo");
+
                 Toast.makeText(context,"connessione gps ripristinata",Toast.LENGTH_LONG).show();
             }
             iCanReedGPS=true;
         }
-        new MoveMarker(marker,context,iCanReedGPS).execute(requestInterval);
-        Log.i(TAG,"ho finitio");
     }
+
 }
