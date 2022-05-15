@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address, tv_waypointsCounts;
     private Switch sw_locationupdates, sw_gps;
-    private Button  btt_newWaypoint, btt_showWaypointList, btt_showMap, btt_startDBrequest;
+    private Button btt_showWaypointList, btt_showMap, btt_startDBrequest;
 
     // Location request is a config file for all settings related to FusedLocationProviderClient
     private LocationRequest locationRequest;
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         sw_gps = findViewById(R.id.sw_gps);
         sw_locationupdates = findViewById(R.id.sw_locationsupdates);
         //Buttons
-        btt_newWaypoint= findViewById(R.id.btt_newWayPoint);
         btt_showWaypointList = findViewById(R.id.btt_showWaypointList);
         btt_showMap = findViewById(R.id.btt_showMap);
         btt_startDBrequest = findViewById(R.id.btt_startDBrequest);
@@ -125,15 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 //turn off tracking(){
                 stopLocationUpdates();
             }
-        });
-
-        btt_newWaypoint.setOnClickListener(view -> {
-            // get the gps location
-
-            // add the new location to the global list
-            CameraList cameraList = (CameraList)getApplicationContext();
-            savedLocations = cameraList.getMyLocations();
-            //savedLocations.add(currentLocation);
         });
 
         btt_showWaypointList.setOnClickListener(view -> {

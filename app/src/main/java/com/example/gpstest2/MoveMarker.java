@@ -22,10 +22,9 @@ import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 
 public class MoveMarker extends AsyncTask {
-    String TAG = "ciaooooooooooo";
+    String TAG = "MoveMarker";
     private Marker marker;
-    private Context context;
-    private Location newLocation;
+    private final Context context;
     private Boolean iCanReedGPS;
 
     public MoveMarker(Marker m,Context c, Boolean gpsVisibility){
@@ -35,26 +34,13 @@ public class MoveMarker extends AsyncTask {
     }
     @Override
     protected Object doInBackground(Object[] objects) {
-        Looper.prepare();
-            Log.i(TAG,"doInBack");
-            updateGPS(context);
-            if (newLocation == null) {
-                if(iCanReedGPS){
-                    Toast.makeText(context, "connessione gps interrotta", Toast.LENGTH_LONG);
-                }
-                iCanReedGPS = false;
-            }else{
-                if(!iCanReedGPS){
-                    Toast.makeText(context, "connessione gps ripristinata", Toast.LENGTH_LONG);
-                }
-                iCanReedGPS=true;
-            }
-            Looper.loop();
+        Log.i(TAG,"doInBack");
+        updateGPS(context);
         return null;
     }
 
     @SuppressLint("MissingPermission")
-    private boolean updateGPS(Context c){
+    private void updateGPS(Context c){
         Log.i(TAG,"updateGPS");
         FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(c);
 
@@ -66,6 +52,7 @@ public class MoveMarker extends AsyncTask {
 
                 fusedLocationProviderClient.getCurrentLocation(locationRequest.getPriority(), new CancellationToken() {
 
+                    @NonNull
                     @Override
                     public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
                         return null;
@@ -78,24 +65,24 @@ public class MoveMarker extends AsyncTask {
                 }).addOnCompleteListener(task -> {
                     Location location = task.getResult();
                     if (location != null) {
-                        newLocation = location;
+                        Log.i(TAG,"updateGPS:  location trovata");
                         marker.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
                     }
 
                 });
         }
-        return newLocation == null;
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         new MoveMarker(marker,context,iCanReedGPS).execute();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG,"ho finitiooooooooooooo");
+        Log.i(TAG,"ho finitio");
     }
 }

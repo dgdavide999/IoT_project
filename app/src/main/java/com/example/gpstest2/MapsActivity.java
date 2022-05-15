@@ -70,9 +70,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             myMarker = mMap.addMarker(markerOptions);
             /*zoom at user's position*/
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
-            //TODO: creare un thread che aggiorna questo marker ogni secondo
             MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
-            Log.i("prima di exxxxxxxecuteeeeeeeee","qui");
+            Log.i("MapsActivity","mm.execute");
             mm.execute(getApplicationContext());
         }
         //click on markers
@@ -90,9 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     i.putExtra("address",geocoder.getFromLocation(pos.latitude, pos.longitude, 1).get(0).getAddressLine(0));
                 } catch (IOException e) {
-                    e.printStackTrace();
+
                 }
-                //TODO: far partire i (aspetta di avere le query)
+                //TODO: far partire i (aspetta di avere le query "lastRegistration")
                 return false;
             }
         });
