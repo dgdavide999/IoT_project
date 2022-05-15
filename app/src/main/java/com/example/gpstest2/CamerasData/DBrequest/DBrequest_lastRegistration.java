@@ -1,11 +1,6 @@
 package com.example.gpstest2.CamerasData.DBrequest;
 
-import com.example.gpstest2.CamerasData.Camera;
-import com.example.gpstest2.CamerasData.CameraStatus;
-import com.example.gpstest2.CamerasData.Registrations.Scorrimento;
-
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,11 +10,9 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DBrequest_lastRegistration  implements Runnable{
-    private String ris;
+    private final String ris;
     public DBrequest_lastRegistration(String s){
         ris = s;
     }

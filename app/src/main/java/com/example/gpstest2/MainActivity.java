@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address;
     private Switch sw_locationupdates, sw_gps;
-    private Button btt_showWaypointList, btt_showMap, btt_startDBrequest;
+    private Button btt_showMap, btt_startDBrequest;
 
     // Location request is a config file for all settings related to FusedLocationProviderClient
     private LocationRequest locationRequest;

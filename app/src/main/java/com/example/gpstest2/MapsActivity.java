@@ -42,6 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         CameraList cameraList = (CameraList)getApplicationContext();
@@ -79,9 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 //ritornare false significa ok
-                if(marker.getSnippet()==null || marker.getSnippet()=="you")
+                if(marker.getSnippet()==null || marker.getSnippet().equals("you"))
                     return false;
-                Integer cameraId = Integer.parseInt(marker.getSnippet());
                 Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
                 i.putExtra("cameraID",marker.getSnippet());
                 Geocoder geocoder = new Geocoder(getApplicationContext());
