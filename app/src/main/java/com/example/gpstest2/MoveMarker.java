@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnTokenCanceledListener;
 public class MoveMarker extends AsyncTask {
     String TAG = "MoveMarker";
     private Marker marker;
+    private Location newLocation;
     private final Context context;
     private Boolean iCanReedGPS;
 
@@ -65,6 +66,7 @@ public class MoveMarker extends AsyncTask {
                 }).addOnCompleteListener(task -> {
                     Location location = task.getResult();
                     if (location != null) {
+                        newLocation = location;
                         Log.i(TAG,"updateGPS:  location trovata");
                         marker.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
                     }
@@ -82,6 +84,17 @@ public class MoveMarker extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        if(newLocation==null){
+            if(iCanReedGPS){
+                Toast.makeText(context,"connessione gps interrotta",Toast.LENGTH_LONG).show();
+            }
+            iCanReedGPS=false;
+        }else{
+            if(!iCanReedGPS){
+                Toast.makeText(context,"connessione gps ripristinata",Toast.LENGTH_LONG).show();
+            }
+            iCanReedGPS=true;
+        }
         new MoveMarker(marker,context,iCanReedGPS).execute();
         Log.i(TAG,"ho finitio");
     }
