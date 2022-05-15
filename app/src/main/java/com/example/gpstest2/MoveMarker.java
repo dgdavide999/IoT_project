@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,10 +22,11 @@ import com.google.android.gms.tasks.OnTokenCanceledListener;
 
 public class MoveMarker extends AsyncTask {
     String TAG = "MoveMarker";
-    private Marker marker;
+    private final Marker marker;
     private Location newLocation;
     private final Context context;
     private Boolean iCanReedGPS;
+    private long requestInterval;
 
     public MoveMarker(Marker m,Context c, Boolean gpsVisibility){
         marker = m;
@@ -36,6 +36,7 @@ public class MoveMarker extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         Log.i(TAG,"doInBack");
+        requestInterval = (long)objects[0];
         updateGPS(context);
         return null;
     }
@@ -75,7 +76,7 @@ public class MoveMarker extends AsyncTask {
         }
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(requestInterval);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -95,7 +96,7 @@ public class MoveMarker extends AsyncTask {
             }
             iCanReedGPS=true;
         }
-        new MoveMarker(marker,context,iCanReedGPS).execute();
+        new MoveMarker(marker,context,iCanReedGPS).execute(requestInterval);
         Log.i(TAG,"ho finitio");
     }
 }

@@ -72,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
             MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
             Log.i("MapsActivity","mm.execute");
-            mm.execute(getApplicationContext());
+            mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
         }
         //click on markers
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -95,5 +95,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("TAG","OnDestroy");
     }
 }

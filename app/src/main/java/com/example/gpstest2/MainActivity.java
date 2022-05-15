@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FAST_UPDATE_INTERVAL = 5;
     private static final int PERMISSION_CODE = 3;
 
-    private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address, tv_waypointsCounts;
+    private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address;
     private Switch sw_locationupdates, sw_gps;
     private Button btt_showWaypointList, btt_showMap, btt_startDBrequest;
 
@@ -73,12 +73,10 @@ public class MainActivity extends AppCompatActivity {
         tv_sensor = findViewById(R.id.tv_sensor);
         tv_updates = findViewById(R.id.tv_updates);
         tv_address = findViewById(R.id.tv_address);
-        tv_waypointsCounts = findViewById(R.id.tv_waypoints);
         //Switches
         sw_gps = findViewById(R.id.sw_gps);
         sw_locationupdates = findViewById(R.id.sw_locationsupdates);
         //Buttons
-        btt_showWaypointList = findViewById(R.id.btt_showWaypointList);
         btt_showMap = findViewById(R.id.btt_showMap);
         btt_startDBrequest = findViewById(R.id.btt_startDBrequest);
         //locationManager
@@ -126,15 +124,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btt_showWaypointList.setOnClickListener(view -> {
-            Intent i = new Intent(MainActivity.this, ShowSavedLocationList.class);
-            startActivity(i);
-        });
 
         btt_showMap.setOnClickListener(view -> {
             Intent i = new Intent(MainActivity.this,MapsActivity.class);
             i.putExtra("lat", currentLocation.getLatitude());
             i.putExtra("lng", currentLocation.getLongitude());
+            i.putExtra("requestInterval",locationRequest.getInterval());
             startActivity(i);
         });
 
@@ -259,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
 
         CameraList cameraList = (CameraList) getApplicationContext();
         savedLocations = cameraList.getMyLocations();
-        tv_waypointsCounts.setText(Integer.toString(savedLocations.size()));
         //show the numbeer of waypoints
     }
 }
