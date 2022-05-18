@@ -79,7 +79,7 @@ public class MoveMarker implements Runnable {
                     if (newLocation != null) {
                         Log.i(TAG, "updateGPS:  location trovata");
                         iCanReedGPS = true;
-                        res =  new LatLng(newLocation.getLatitude()+1, newLocation.getLongitude());
+                        res =  new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
                     } else {
                         Log.i(TAG, "updateGPS:  location = null");
                         iCanReedGPS = false;
