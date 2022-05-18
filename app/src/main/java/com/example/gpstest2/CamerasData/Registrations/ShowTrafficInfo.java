@@ -23,6 +23,7 @@ public class ShowTrafficInfo extends AppCompatActivity implements IDBrequest {
 
     @Override
     public void onDownoladDone(String res) {
+        //TODO: mostrare anche lo status camera
         tv_traffic.setText(res);
     }
 }

@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                     fusedLocationProviderClient.getCurrentLocation(locationRequest.getPriority(), new CancellationToken() {
 
+                        @NonNull
                         @Override
                         public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
                             return null;

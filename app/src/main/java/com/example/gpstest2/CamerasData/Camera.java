@@ -9,14 +9,15 @@ public class Camera {
     }
 
     private final LatLng position;
-    private CameraStatus status;
+    private final CameraStatus status;
 
-    public void setStatus(CameraStatus status) {
-        this.status = status;
-    }
 
     public Camera(double lat, double lng, CameraStatus s){
         position = new LatLng(lat,lng);
         status = s;
+    }
+
+    public CameraStatus getStatus() {
+        return status;
     }
 }
