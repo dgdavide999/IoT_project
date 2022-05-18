@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -24,8 +25,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,IDynamicMaps {
+    private final String TAG = "MapsActivity";
     public static final float ZOOM = 12.0f;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -76,9 +77,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             myMarker = mMap.addMarker(markerOptions);
             /*zoom at user's position*/
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
-            MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
-            Log.i("MapsActivity","mm.execute");
+            //MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
+            //Log.i("MapsActivity","mm.execute");
             //mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
+            new Thread(new MoveMarker(getIntent().getLongExtra("requestInterval",30*1000),getApplicationContext(),this,this)).start();
 
         }
         //click on markers
@@ -106,5 +108,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.i("TAG","OnDestroy");
         //TODO: fermare i moveMaker (broadCast?)
         // usare put extra con un valore bool che se falso termina il ciclo?
+    }
+
+    @Override
+    public void update(LatLng newPosition) {
+        Log.i(TAG,"position update");
+        if(newPosition==null)return;
+        myMarker.setPosition(newPosition);
+        new Thread(new MoveMarker(getIntent().getLongExtra("requestInterval",5*1000),getApplicationContext(),this,this)).start();
+    }
+
+    @Override
+    public void publishProgress() {
     }
 }

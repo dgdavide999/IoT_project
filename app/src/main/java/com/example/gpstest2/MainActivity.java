@@ -39,8 +39,8 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements IDBrequest {
     private static final String TAG = "MainActivity";
-    private static final int DEFAULT_UPDATE_INTERVAL = 30;
-    private static final int FAST_UPDATE_INTERVAL = 5;
+    private static final int DEFAULT_UPDATE_INTERVAL = 5;
+    private static final int FAST_UPDATE_INTERVAL = 2;
     private static final int PERMISSION_CODE = 3;
 
     private TextView tv_lat, tv_lon, tv_altitude, tv_accuracy, tv_speed, tv_sensor, tv_updates, tv_address;
