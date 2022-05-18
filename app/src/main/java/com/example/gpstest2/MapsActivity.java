@@ -28,6 +28,7 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,IDynamicMaps {
     private final String TAG = "MapsActivity";
     public static final float ZOOM = 12.0f;
+    private Boolean connection = true;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private Marker myMarker;
@@ -102,20 +103,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("TAG","OnDestroy");
-        //TODO: fermare i moveMaker (broadCast?)
-        // usare put extra con un valore bool che se falso termina il ciclo?
-    }
 
     @Override
     public void update(LatLng newPosition) {
         Log.i(TAG,"position update");
-        if(newPosition==null)return;
-        myMarker.setPosition(newPosition);
-        new Thread(new MoveMarker(getIntent().getLongExtra("requestInterval",5*1000),getApplicationContext(),this,this)).start();
+        if(newPosition==null) {
+            if (connection)
+                Toast.makeText(getApplicationContext(), "connessione gps interrotta", Toast.LENGTH_LONG).show();
+            connection = false;
+        }else {
+            if(!connection)
+                Toast.makeText(getApplicationContext(),"connessione gps ripristinata",Toast.LENGTH_LONG).show();
+            connection = true;
+            myMarker.setPosition(newPosition);
+            new Thread(new MoveMarker(getIntent().getLongExtra("requestInterval", 5 * 1000), getApplicationContext(), this, this)).start();
+        }
     }
 
     @Override

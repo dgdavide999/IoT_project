@@ -87,31 +87,8 @@ public class MoveMarker implements Runnable {
                     }
                     activity.runOnUiThread(() -> {
                         dynamicMaps.update(res);
-                        publishProgress();
                     });
                 });
         }
     }
-
-    protected void publishProgress() {
-        Log.i(TAG,"ho aggiornato");
-        if(newLocation==null){
-            Log.i(TAG,"non trovo");
-            if(iCanReedGPS){
-                Toast.makeText(context,"connessione gps interrotta",Toast.LENGTH_LONG).show();
-                Log.i(TAG,"avverto che non trovo");
-            }
-            iCanReedGPS=false;
-        }else{
-            Log.i(TAG,"trovo");
-            if(!iCanReedGPS){
-                Log.i(TAG,"avverto che trovo");
-                Toast.makeText(context,"connessione gps ripristinata",Toast.LENGTH_LONG).show();
-            }
-            iCanReedGPS=true;
-            Log.i(TAG,"fine aggiornamento");
-        }
-    }
-
-
 }
