@@ -2,14 +2,14 @@ package com.example.gpstest2.CamerasData.Registrations;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.gpstest2.CamerasData.DBrequest.DBrequest_lastRegistration;
+import com.example.gpstest2.CamerasData.DBrequest.IDBrequest;
 import com.example.gpstest2.R;
 
-public class ShowTrafficInfo extends AppCompatActivity {
+public class ShowTrafficInfo extends AppCompatActivity implements IDBrequest {
     TextView tv_address, tv_traffic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,11 @@ public class ShowTrafficInfo extends AppCompatActivity {
         tv_address = findViewById(R.id.tv_address);
         tv_traffic = findViewById(R.id.tv_traffic);
         tv_address.setText(getIntent().getStringExtra("address"));
-        String ris = "";
-       new DBrequest_lastRegistration(ris,getIntent().getStringExtra("cameraID"),tv_traffic).execute();
-        tv_traffic.setText(ris);
+        new Thread(new DBrequest_lastRegistration(getIntent().getStringExtra("cameraID"),this,this)).start();
+    }
+
+    @Override
+    public void onDownoladDone(String res) {
+        tv_traffic.setText(res);
     }
 }

@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat;
 import com.example.gpstest2.CamerasData.Camera;
 import com.example.gpstest2.CamerasData.CameraList;
 import com.example.gpstest2.CamerasData.DBrequest.DBrequest_cameras;
+import com.example.gpstest2.CamerasData.DBrequest.IDBrequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,7 +37,7 @@ import com.google.android.gms.tasks.OnTokenCanceledListener;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IDBrequest {
     private static final String TAG = "MainActivity";
     private static final int DEFAULT_UPDATE_INTERVAL = 30;
     private static final int FAST_UPDATE_INTERVAL = 5;
@@ -102,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
         //fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        //DBrequest for cameras data
-        CameraList cameraList = (CameraList)getApplicationContext();
-        new Thread(new DBrequest_cameras(cameraList)).start();
+
         //onClickListeners
         sw_gps.setOnClickListener(view -> {
             if (sw_gps.isChecked()) {
@@ -131,12 +130,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         btt_showMap.setOnClickListener(view -> {
-
-            Intent i = new Intent(MainActivity.this,MapsActivity.class);
-            i.putExtra("lat", currentLocation.getLatitude());
-            i.putExtra("lng", currentLocation.getLongitude());
-            i.putExtra("requestInterval",locationRequest.getInterval());
-            startActivity(i);
+            //DBrequest for cameras data
+            CameraList cameraList = (CameraList)getApplicationContext();
+            new Thread(new DBrequest_cameras(cameraList,this,this)).start();
         });
 
         startLocationUpdates();
@@ -256,5 +252,14 @@ public class MainActivity extends AppCompatActivity {
         CameraList cameraList = (CameraList) getApplicationContext();
         savedLocations = cameraList.getMyLocations();
         //show the numbeer of waypoints
+    }
+
+    @Override
+    public void onDownoladDone(String res) {
+        Intent i = new Intent(MainActivity.this,MapsActivity.class);
+        i.putExtra("lat", currentLocation.getLatitude());
+        i.putExtra("lng", currentLocation.getLongitude());
+        i.putExtra("requestInterval",locationRequest.getInterval());
+        startActivity(i);
     }
 }

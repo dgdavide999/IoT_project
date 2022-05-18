@@ -1,8 +1,7 @@
 package com.example.gpstest2.CamerasData.DBrequest;
 
-import android.os.AsyncTask;
+import android.app.Activity;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONException;
 
@@ -15,29 +14,39 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class DBrequest_lastRegistration  extends AsyncTask {
-    private  String ris;
-    private final String id;
-    private TextView tv;
-    public DBrequest_lastRegistration(String s, String id, TextView tv){
-        ris = s;
+public class DBrequest_lastRegistration  implements Runnable{
+    private final String id, TAG = "DBrequest_lastRegistration";
+    private IDBrequest idBrequest_lastRegistration;
+    private Activity activity;
+    public DBrequest_lastRegistration(String id, IDBrequest idBrequest_lastRegistration, Activity activity){
         this.id = id;
-        tv = tv;
-
+        this.idBrequest_lastRegistration = idBrequest_lastRegistration;
+        this.activity = activity;
+    }
+    @Override
+    public void run() {
+        String res = downloadJSON();
+        Log.i(TAG,"ui thread");
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                idBrequest_lastRegistration.onDownoladDone(res);
+            }
+        });
     }
 
-
-    private void downloadJSON() {
+    private String downloadJSON() {
         try {
-            loadIntoListView();
+            return loadIntoListView();
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
+        return "connessione fallita";
     }
 
-    private void loadIntoListView() throws JSONException, IOException {
+    private String loadIntoListView() throws JSONException, IOException {
         Log.i("TAG", "URL = "+"https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
-        ris = readJsonFromUrl("https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
+        return readJsonFromUrl("https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
     }
 
     public String  readJsonFromUrl(String link) {
@@ -45,7 +54,7 @@ public class DBrequest_lastRegistration  extends AsyncTask {
             BufferedReader re = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
             String Text = Read(re);
             //TODO: vedere la sintassi e fare un parsing
-            return Text;
+            return Text.replace("\""," ");
         } catch (MalformedURLException e) {
             return null;
         } catch (IOException e) {
@@ -60,18 +69,11 @@ public class DBrequest_lastRegistration  extends AsyncTask {
             temp = re.read();       //reading Charcter By Chracter.
             str.append((char) temp);
         } while (temp != -1);
-        Log.i("TAG","letto =" + str);
+        Log.i(TAG,"l messaggio =" + str.length());
+        if(str.length()<=3)
+            return "impossibile raggiungere il db";
         return str.substring(2,str.length()-3);
     }
 
-    @Override
-    protected Object doInBackground(Object[] objects)  {
-        downloadJSON();
-        return null;
-    }
 
-    @Override
-    protected void onPostExecute(Object o) {
-        tv.setText(ris);
-    }
 }

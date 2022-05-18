@@ -1,5 +1,6 @@
 package com.example.gpstest2.CamerasData.DBrequest;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.example.gpstest2.CamerasData.Camera;
@@ -21,16 +22,28 @@ import java.util.List;
 import java.util.Map;
 
 public class DBrequest_cameras implements Runnable{
-    final String TAG ="DBrequest_cameras";
+    private final String TAG ="DBrequest_cameras";
+    private Activity activity;
+    private IDBrequest iDBrequest;
     CameraList cameraList;
     Map<Integer, Camera> savedLocations;
-    public DBrequest_cameras(CameraList lc){
+
+    public DBrequest_cameras(CameraList lc, IDBrequest iDBrequest ,Activity activity){
         cameraList = lc;
+        this.iDBrequest = iDBrequest;
+        this.activity = activity;
     }
+
     @Override
     public void run() {
         savedLocations = cameraList.getMyLocations();
         downloadJSON();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                iDBrequest.onDownoladDone("done");
+            }
+        });
     }
 
     private void downloadJSON() {
