@@ -1,5 +1,7 @@
 package com.example.gpstest2.CamerasData.DBrequest;
 
+import android.util.Log;
+
 import com.example.gpstest2.CamerasData.Camera;
 import com.example.gpstest2.CamerasData.CameraList;
 import com.example.gpstest2.CamerasData.CameraStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBrequest_cameras implements Runnable{
+    final String TAG ="DBrequest_cameras";
     CameraList cameraList;
     Map<Integer, Camera> savedLocations;
     public DBrequest_cameras(CameraList lc){
@@ -47,18 +50,21 @@ public class DBrequest_cameras implements Runnable{
     }
 
     public List<JSONObject> readJsonFromUrl(String link) {
+        List<JSONObject> l = new ArrayList<>();
         try (InputStream input = new URL(link).openStream()) {
-            List<JSONObject> l = new ArrayList<>();
+            Log.i(TAG,"dentro il try");
             BufferedReader re = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
             String Text = Read(re);
+            Log.i(TAG,"text = "+Text);
             for (String jobj : Text.split("\\},\\{")) {
                 JSONObject json = new JSONObject("{" + jobj + "}");    //Creating A JSON
                 l.add(json);
             }
-            return l;
         } catch (Exception e) {
+            Log.e(TAG,"qualcosa è andato storto");
+            e.printStackTrace();
             return null;
-        }
+        }return l;
     }
 
     public String Read(Reader re) throws IOException {

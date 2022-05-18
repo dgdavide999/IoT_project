@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         // how often does the default location check occur when set to the most frequent update
         locationRequest.setFastestInterval(1000 * FAST_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+
         //locationCallback
         locationCallback = new LocationCallback(){
             @Override
@@ -99,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
         };
         //fusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        //DBrequest for cameras data
+        CameraList cameraList = (CameraList)getApplicationContext();
+        new Thread(new DBrequest_cameras(cameraList)).start();
         //onClickListeners
         sw_gps.setOnClickListener(view -> {
             if (sw_gps.isChecked()) {
@@ -125,9 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         btt_showMap.setOnClickListener(view -> {
-            CameraList cameraList = (CameraList)getApplicationContext();
-            //TODO: creare solo il runnable e usare il metodo run
-            new Thread(new DBrequest_cameras(cameraList)).start();
+
             Intent i = new Intent(MainActivity.this,MapsActivity.class);
             i.putExtra("lat", currentLocation.getLatitude());
             i.putExtra("lng", currentLocation.getLongitude());

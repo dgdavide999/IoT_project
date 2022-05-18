@@ -56,7 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = camera.getPosition();
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position((latLng));
-            markerOptions.title("Lat: "+ camera.getPosition().latitude+" Long: "+camera.getPosition().longitude);
+            try {
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                markerOptions.title(geocoder.getFromLocation(camera.getPosition().latitude, camera.getPosition().longitude, 1).get(0).getAddressLine(0));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             markerOptions.snippet(""+id);
             mMap.addMarker(markerOptions);
         });
@@ -73,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
             MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
             Log.i("MapsActivity","mm.execute");
-            mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
+            //mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
 
         }
         //click on markers

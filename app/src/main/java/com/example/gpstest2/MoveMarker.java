@@ -73,13 +73,12 @@ public class MoveMarker extends AsyncTask {
                         Log.i(TAG, "updateGPS:  location = null");
                     publishProgress(iCanReedGPS);
                     try {
-                        Thread.sleep(requestInterval / 10);
+                        Thread.sleep(requestInterval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     updateGPS(context);
                 });
-                /**/
         }
     }
 
@@ -98,10 +97,10 @@ public class MoveMarker extends AsyncTask {
             Log.i(TAG,"trovo");
             if(!iCanReedGPS){
                 Log.i(TAG,"avverto che trovo");
-
                 Toast.makeText(context,"connessione gps ripristinata",Toast.LENGTH_LONG).show();
             }
             iCanReedGPS=true;
+            Log.i(TAG,"fine aggiornamento");
         }
     }
 
