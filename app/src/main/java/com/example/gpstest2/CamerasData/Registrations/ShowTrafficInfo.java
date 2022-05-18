@@ -2,6 +2,7 @@ package com.example.gpstest2.CamerasData.Registrations;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -17,9 +18,8 @@ public class ShowTrafficInfo extends AppCompatActivity {
         tv_address = findViewById(R.id.tv_address);
         tv_traffic = findViewById(R.id.tv_traffic);
         tv_address.setText(getIntent().getStringExtra("address"));
-        String cameraId = getIntent().getStringExtra("cameraID");
         String ris = "";
-        new DBrequest_lastRegistration(ris).run();//no nuovo thread, aspetto di avere i dati per mostrarli
+       new DBrequest_lastRegistration(ris,getIntent().getStringExtra("cameraID"),tv_traffic).execute();
         tv_traffic.setText(ris);
     }
 }

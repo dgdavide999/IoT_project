@@ -33,6 +33,7 @@ public class MoveMarker extends AsyncTask {
         context = c;
         iCanReedGPS = gpsVisibility;
     }
+
     @Override
     protected Object doInBackground(Object[] objects) {
         Log.i(TAG,"doInBack");

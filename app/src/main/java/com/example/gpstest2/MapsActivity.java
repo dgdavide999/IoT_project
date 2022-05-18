@@ -91,8 +91,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng pos = marker.getPosition();
             try {
                 i.putExtra("address",geocoder.getFromLocation(pos.latitude, pos.longitude, 1).get(0).getAddressLine(0));
-            } catch (IOException e) {}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             //TODO: far partire i (aspetta di avere le query "lastRegistration")
+            startActivity(i);
             return false;
         });
     }

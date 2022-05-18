@@ -1,5 +1,9 @@
 package com.example.gpstest2.CamerasData.DBrequest;
 
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.TextView;
+
 import org.json.JSONException;
 
 import java.io.BufferedReader;
@@ -11,16 +15,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class DBrequest_lastRegistration  implements Runnable{
-    private final String ris;
-    public DBrequest_lastRegistration(String s){
+public class DBrequest_lastRegistration  extends AsyncTask {
+    private  String ris;
+    private final String id;
+    private TextView tv;
+    public DBrequest_lastRegistration(String s, String id, TextView tv){
         ris = s;
+        this.id = id;
+        tv = tv;
+
     }
 
-    @Override
-    public void run() {
-        downloadJSON();
-    }
 
     private void downloadJSON() {
         try {
@@ -31,7 +36,8 @@ public class DBrequest_lastRegistration  implements Runnable{
     }
 
     private void loadIntoListView() throws JSONException, IOException {
-        String jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/registration_request.php");
+        Log.i("TAG", "URL = "+"https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
+        ris = readJsonFromUrl("https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
     }
 
     public String  readJsonFromUrl(String link) {
@@ -54,8 +60,18 @@ public class DBrequest_lastRegistration  implements Runnable{
             temp = re.read();       //reading Charcter By Chracter.
             str.append((char) temp);
         } while (temp != -1);
-        //  re.read() return -1 when there is end of buffer , data or end of file.
+        Log.i("TAG","letto =" + str);
         return str.substring(2,str.length()-3);
-        //toglo le quadre prima e ultima graffa e il -1
+    }
+
+    @Override
+    protected Object doInBackground(Object[] objects)  {
+        downloadJSON();
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        tv.setText(ris);
     }
 }
