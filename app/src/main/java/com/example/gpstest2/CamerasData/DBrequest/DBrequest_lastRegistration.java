@@ -10,14 +10,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class DBrequest_lastRegistration  implements Runnable{
     private final String id, TAG = "DBrequest_lastRegistration";
-    private IDBrequest idBrequest_lastRegistration;
-    private Activity activity;
+    private final IDBrequest idBrequest_lastRegistration;
+    private final Activity activity;
     public DBrequest_lastRegistration(String id, IDBrequest idBrequest_lastRegistration, Activity activity){
         this.id = id;
         this.idBrequest_lastRegistration = idBrequest_lastRegistration;
@@ -27,12 +26,7 @@ public class DBrequest_lastRegistration  implements Runnable{
     public void run() {
         String res = downloadJSON();
         Log.i(TAG,"ui thread");
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                idBrequest_lastRegistration.onDownoladDone(res);
-            }
-        });
+        activity.runOnUiThread(() -> idBrequest_lastRegistration.onDownoladDone(res));
     }
 
     private String downloadJSON() {
@@ -55,8 +49,6 @@ public class DBrequest_lastRegistration  implements Runnable{
             String Text = Read(re);
             //TODO: vedere la sintassi e fare un parsing
             return Text.replace("\""," ");
-        } catch (MalformedURLException e) {
-            return null;
         } catch (IOException e) {
             return null;
         }
@@ -74,6 +66,4 @@ public class DBrequest_lastRegistration  implements Runnable{
             return "impossibile raggiungere il db";
         return str.substring(2,str.length()-3);
     }
-
-
 }

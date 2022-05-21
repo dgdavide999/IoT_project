@@ -6,9 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -17,7 +15,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 
@@ -28,7 +25,6 @@ public class MoveMarker implements Runnable {
     private final Context context;
     private final long requestInterval;
     private Location newLocation;
-    private Boolean iCanReedGPS;
 
     public MoveMarker(long requestInterval, Context context, IDynamicMaps dynamicMaps, Activity activity){
         this.requestInterval = requestInterval;
@@ -78,16 +74,12 @@ public class MoveMarker implements Runnable {
                     LatLng res;
                     if (newLocation != null) {
                         Log.i(TAG, "updateGPS:  location trovata");
-                        iCanReedGPS = true;
                         res =  new LatLng(newLocation.getLatitude(), newLocation.getLongitude());
                     } else {
                         Log.i(TAG, "updateGPS:  location = null");
-                        iCanReedGPS = false;
                         res =  null;
                     }
-                    activity.runOnUiThread(() -> {
-                        dynamicMaps.update(res);
-                    });
+                    activity.runOnUiThread(() -> dynamicMaps.update(res));
                 });
         }
     }

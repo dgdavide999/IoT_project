@@ -23,8 +23,8 @@ import java.util.Map;
 
 public class DBrequest_cameras implements Runnable{
     private final String TAG ="DBrequest_cameras";
-    private Activity activity;
-    private IDBrequest iDBrequest;
+    private final Activity activity;
+    private final IDBrequest iDBrequest;
     CameraList cameraList;
     Map<Integer, Camera> savedLocations;
 
@@ -38,12 +38,7 @@ public class DBrequest_cameras implements Runnable{
     public void run() {
         savedLocations = cameraList.getMyLocations();
         downloadJSON();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                iDBrequest.onDownoladDone("done");
-            }
-        });
+        activity.runOnUiThread(() -> iDBrequest.onDownoladDone("done"));
     }
 
     private void downloadJSON() {

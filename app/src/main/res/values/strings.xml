@@ -33,4 +33,9 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="MAP_BUTTON">show map</string>
+    <string name="STATUS_ON_MESSAGE">status: Attivo</string>
+    <string name="STATUS_OFF_MESSAGE">status: Disattivo</string>
+    <string name="NO_TRAFFIC_DATA_AVAILABLE">Dati non disponibili</string>
+    <string name="TRAFFIC_STATUS_LABEL">caricamento</string>
+    <string name="CAMERA_STATUS_LABEL">status:</string>
 </resources>

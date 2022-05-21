@@ -78,9 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             myMarker = mMap.addMarker(markerOptions);
             /*zoom at user's position*/
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(you, ZOOM));
-            //MoveMarker mm = new MoveMarker(myMarker, getApplicationContext(),true);
-            //Log.i("MapsActivity","mm.execute");
-            //mm.execute(getIntent().getLongExtra("requestInterval",30*1000));
             new Thread(new MoveMarker(getIntent().getLongExtra("requestInterval",30*1000),getApplicationContext(),this,this)).start();
 
         }
@@ -90,6 +87,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             Intent i = new Intent(getApplicationContext(), ShowTrafficInfo.class);
             i.putExtra("cameraID",marker.getSnippet());
+            i.putExtra("cameraStatus",savedLocation.get(Integer.valueOf(marker.getSnippet())).getStatus().toString());
             Geocoder geocoder = new Geocoder(getApplicationContext());
             LatLng pos = marker.getPosition();
             try {
@@ -97,7 +95,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //TODO: far partire i (aspetta di avere le query "lastRegistration")
             startActivity(i);
             return false;
         });
