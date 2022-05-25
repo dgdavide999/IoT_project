@@ -53,7 +53,7 @@ public class DBrequest_cameras implements Runnable{
         List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
 
         for (JSONObject obj: jsonList) {
-            savedLocations.put( obj.getInt("id"), new Camera(obj.getDouble("lat"),obj.getDouble("lng"), CameraStatus.valueOf("ON")));
+            savedLocations.put( obj.getInt("id"), new Camera(obj.getDouble("lat"),obj.getDouble("lng"), CameraStatus.valueOf(obj.getString("status"))));
         }
     }
 

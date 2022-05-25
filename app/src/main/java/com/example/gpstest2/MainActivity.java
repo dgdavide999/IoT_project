@@ -258,8 +258,10 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
     @Override
     public void onDownoladDone(String res) {
         Intent i = new Intent(MainActivity.this,MapsActivity.class);
-        i.putExtra("lat", currentLocation.getLatitude());
-        i.putExtra("lng", currentLocation.getLongitude());
+        if(currentLocation != null) {
+            i.putExtra("lat", currentLocation.getLatitude());
+            i.putExtra("lng", currentLocation.getLongitude());
+        }
         i.putExtra("requestInterval",locationRequest.getInterval());
         startActivity(i);
     }
