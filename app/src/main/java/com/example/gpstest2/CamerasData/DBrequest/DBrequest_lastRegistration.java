@@ -3,6 +3,8 @@ package com.example.gpstest2.CamerasData.DBrequest;
 import android.app.Activity;
 import android.util.Log;
 
+import com.example.gpstest2.R;
+
 import org.json.JSONException;
 
 import java.io.BufferedReader;
@@ -39,15 +41,13 @@ public class DBrequest_lastRegistration  implements Runnable{
     }
 
     private String loadIntoListView() throws JSONException, IOException {
-        Log.i("TAG", "URL = "+"https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
-        return readJsonFromUrl("https://sawproject.altervista.org/php/cam_status_request.php?id="+id);
+        return readJsonFromUrl(activity.getString(R.string.CAMERA_STATUS_REQUEST_IPADDRESS)+id);
     }
 
     public String  readJsonFromUrl(String link) {
         try (InputStream input = new URL(link).openStream()) {
             BufferedReader re = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
             String Text = Read(re);
-            //TODO: vedere la sintassi e fare un parsing
             return Text.replace("\""," ");
         } catch (IOException e) {
             return null;

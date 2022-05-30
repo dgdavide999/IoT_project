@@ -61,7 +61,7 @@ public class DBrequest_cameras implements Runnable{
     }
 
     private void loadIntoListView() throws JSONException, IOException {
-        List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
+        List<JSONObject> jsonList = readJsonFromUrl(activity.getString(R.string.CAMERA_REQUEST_IPADDRESS));
         if(jsonList==null)throw new ConnectException();
         for (JSONObject obj: jsonList) {
             savedLocations.put( obj.getInt("id"), new Camera(obj.getDouble("lat"),obj.getDouble("lng"), CameraStatus.valueOf(obj.getString("status"))));
