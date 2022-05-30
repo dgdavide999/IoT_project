@@ -2,10 +2,12 @@ package com.example.gpstest2.CamerasData.DBrequest;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.gpstest2.CamerasData.Camera;
 import com.example.gpstest2.CamerasData.CameraList;
 import com.example.gpstest2.CamerasData.CameraStatus;
+import com.example.gpstest2.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.ConnectException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -37,21 +40,29 @@ public class DBrequest_cameras implements Runnable{
     @Override
     public void run() {
         savedLocations = cameraList.getMyLocations();
-        downloadJSON();
+        try {
+            downloadJSON();
+        } catch (ConnectException e) {
+            activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.NO_INTERNET,Toast.LENGTH_LONG).show());
+            return;
+        }
         activity.runOnUiThread(() -> iDBrequest.onDownoladDone("done"));
     }
 
-    private void downloadJSON() {
+    private void downloadJSON() throws ConnectException {
         try {
             loadIntoListView();
-        } catch (JSONException | IOException e) {
+        } catch(ConnectException e){
+            throw e;
+        }
+        catch(JSONException | IOException e) {
             e.printStackTrace();
         }
     }
 
     private void loadIntoListView() throws JSONException, IOException {
         List<JSONObject> jsonList = readJsonFromUrl("https://sawproject.altervista.org/php/cam_request.php");
-
+        if(jsonList==null)throw new ConnectException();
         for (JSONObject obj: jsonList) {
             savedLocations.put( obj.getInt("id"), new Camera(obj.getDouble("lat"),obj.getDouble("lng"), CameraStatus.valueOf(obj.getString("status"))));
         }

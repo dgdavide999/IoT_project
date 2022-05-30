@@ -38,4 +38,5 @@
     <string name="NO_TRAFFIC_DATA_AVAILABLE">Dati non disponibili</string>
     <string name="TRAFFIC_STATUS_LABEL">caricamento</string>
     <string name="CAMERA_STATUS_LABEL">status:</string>
+    <string name="NO_INTERNET">nessuna connessione a internet</string>
 </resources>
