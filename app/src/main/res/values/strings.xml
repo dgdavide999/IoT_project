@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GPStest2</string>
+    <string name="app_name">TrafficTracker</string>
     <string name="SET_PRIORITY_HIGH_ACCURACY">using GPS sensors</string>
     <string name="SET_BALANCED_POWER_ACCURACY">Using towers + wifi</string>
     <string name="PERMISSION_NOT_GRANTED">This app requires permission to be granted in order to work properly</string>
@@ -39,6 +39,10 @@
     <string name="TRAFFIC_STATUS_LABEL">caricamento</string>
     <string name="CAMERA_STATUS_LABEL">status:</string>
     <string name="NO_INTERNET">nessuna connessione a internet</string>
+    <!--
     <string name="CAMERA_REQUEST_IPADDRESS">https://sawproject.altervista.org/php/cam_request.php</string>
     <string name="CAMERA_STATUS_REQUEST_IPADDRESS">https://sawproject.altervista.org/php/cam_status_request.php?id=</string>
+    -->
+    <string name="CAMERA_REQUEST_IPADDRESS">http://2.225.7.81/cam_request.php</string>
+    <string name="CAMERA_STATUS_REQUEST_IPADDRESS">http://2.225.7.81/cam_status_request.php?id=</string>
 </resources>

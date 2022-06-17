@@ -1,4 +1,4 @@
-package com.example.gpstest2.CamerasData.DBrequest;
+package com.example.TrafficTraker.CamerasData.DBrequest;
 
 public interface IDBrequest {
     void onDownoladDone(String res);

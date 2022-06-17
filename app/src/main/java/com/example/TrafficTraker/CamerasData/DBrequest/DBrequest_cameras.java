@@ -1,13 +1,13 @@
-package com.example.gpstest2.CamerasData.DBrequest;
+package com.example.TrafficTraker.CamerasData.DBrequest;
 
 import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.gpstest2.CamerasData.Camera;
-import com.example.gpstest2.CamerasData.CameraList;
-import com.example.gpstest2.CamerasData.CameraStatus;
-import com.example.gpstest2.R;
+import com.example.TrafficTraker.CamerasData.Camera;
+import com.example.TrafficTraker.CamerasData.CameraList;
+import com.example.TrafficTraker.CamerasData.CameraStatus;
+import com.example.TrafficTraker.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

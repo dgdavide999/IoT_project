@@ -1,4 +1,4 @@
-package com.example.gpstest2;
+package com.example.TrafficTraker;
 
 import android.content.Intent;
 import android.location.Geocoder;
@@ -9,10 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.gpstest2.CamerasData.Camera;
-import com.example.gpstest2.CamerasData.CameraList;
-import com.example.gpstest2.CamerasData.Registrations.ShowTrafficInfo;
-import com.example.gpstest2.databinding.ActivityMapsBinding;
+import com.example.TrafficTraker.CamerasData.Camera;
+import com.example.TrafficTraker.CamerasData.CameraList;
+import com.example.TrafficTraker.CamerasData.Registrations.ShowTrafficInfo;
+import com.example.TrafficTraker.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -1,9 +1,9 @@
-package com.example.gpstest2.CamerasData.DBrequest;
+package com.example.TrafficTraker.CamerasData.DBrequest;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.example.gpstest2.R;
+import com.example.TrafficTraker.R;
 
 import org.json.JSONException;
 

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gpstest2">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.TrafficTraker">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".CamerasData.CameraList"
+        android:name="com.example.TrafficTraker.CamerasData.CameraList"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GPStest2">
+        android:theme="@style/Theme.GPStest2"
+        android:usesCleartextTraffic="true"
+        >
         <activity
-            android:name=".CamerasData.Registrations.ShowTrafficInfo"
+            android:name="com.example.TrafficTraker.CamerasData.Registrations.ShowTrafficInfo"
             android:exported="false" />
 
         <meta-data
@@ -23,11 +26,11 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="com.example.TrafficTraker.MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.TrafficTraker.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.gpstest2;
+package com.example.TrafficTraker;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -22,10 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.gpstest2.CamerasData.Camera;
-import com.example.gpstest2.CamerasData.CameraList;
-import com.example.gpstest2.CamerasData.DBrequest.DBrequest_cameras;
-import com.example.gpstest2.CamerasData.DBrequest.IDBrequest;
+import com.example.TrafficTraker.CamerasData.Camera;
+import com.example.TrafficTraker.CamerasData.CameraList;
+import com.example.TrafficTraker.CamerasData.DBrequest.DBrequest_cameras;
+import com.example.TrafficTraker.CamerasData.DBrequest.IDBrequest;
+import com.example.TrafficTraker.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

@@ -1,4 +1,4 @@
-package com.example.gpstest2.CamerasData;
+package com.example.TrafficTraker.CamerasData;
 
 import com.google.android.gms.maps.model.LatLng;
 
