@@ -39,10 +39,6 @@
     <string name="TRAFFIC_STATUS_LABEL">caricamento</string>
     <string name="CAMERA_STATUS_LABEL">status:</string>
     <string name="NO_INTERNET">nessuna connessione a internet</string>
-    <!--
-    <string name="CAMERA_REQUEST_IPADDRESS">https://sawproject.altervista.org/php/cam_request.php</string>
-    <string name="CAMERA_STATUS_REQUEST_IPADDRESS">https://sawproject.altervista.org/php/cam_status_request.php?id=</string>
-    -->
     <string name="CAMERA_REQUEST_IPADDRESS">http://2.225.7.81/cam_request.php</string>
     <string name="CAMERA_STATUS_REQUEST_IPADDRESS">http://2.225.7.81/cam_status_request.php?id=</string>
 </resources>
