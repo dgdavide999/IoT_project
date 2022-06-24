@@ -38,5 +38,5 @@ Se la telecamera è attiva riceveremo lo stato del traffico, esso può essere di
 “scorrevole”, “traffico” o “traffico intenso” <br>
 <img src="img/camera1.jpg" width='300'; height='238'>
 <img src="img/camera2.jpg" width='300'; height='238'>
-Server side : https://github.com/v-Alenz/ServerIoTpp.git
+Server side : https://github.com/v-Alenz/Trafic-Tracker
 
