@@ -26,7 +26,7 @@ import com.example.TrafficTraker.CamerasData.Camera;
 import com.example.TrafficTraker.CamerasData.CameraList;
 import com.example.TrafficTraker.CamerasData.DBrequest.DBrequest_cameras;
 import com.example.TrafficTraker.CamerasData.DBrequest.IDBrequest;
-import com.example.TrafficTraker.R;
+import com.example.gpstest2.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
         btt_showMap = findViewById(R.id.btt_showMap);
         //locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //òocationRequest
+        //locationRequest
         // set all properties of LocationRequest
         locationRequest = LocationRequest.create();
         // how often does the default location check occur
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
 
-        //locationCallback
+        //locationCallback, syscall per la posizione che salvo in currentLocation
         locationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
                 locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
                 tv_sensor.setText(R.string.SET_PRIORITY_HIGH_ACCURACY);
             } else {
+                //less accurate -- use cellular towers
                 locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
                 tv_sensor.setText(R.string.SET_BALANCED_POWER_ACCURACY);
             }
@@ -129,13 +130,11 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
             }
         });
 
-
         btt_showMap.setOnClickListener(view -> {
             //DBrequest for cameras data
             CameraList cameraList = (CameraList)getApplicationContext();
             new Thread(new DBrequest_cameras(cameraList,this,this)).start();
         });
-
         startLocationUpdates();
     }
 
@@ -143,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
     private void startLocationUpdates() {
         Log.i(TAG,"startLocationsUpdate");
         tv_updates.setText(R.string.UPDATE_ON);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, R.string.PERMISSION_NOT_GRANTED, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -216,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements IDBrequest {
                     });
                 }
                 else{
+                    //richiedo l'attivazione del gps
                     startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
         }
